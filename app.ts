@@ -1,49 +1,24 @@
-// you can set the type of an out put of a function. Like variables, generally you dont want to set a type and just let TS set one for you.
+// type unknow is for when we dont know what to expect. its like any but if we try to assing this variable to another variable with strict type we will get an error
+let userInput: unknown;
+let userName: string;
 
-// here is an example where we get an error because we are trying to set a return type to be string when it can only be number.
-// const add = (n1: number, n2: number): string => {
-//   return n1 + n2;
-// }
+userInput = 5;
+// we get an error because we cannot gaurentee userInput is going to be a string
+userName = userInput;
 
-// this is correct
-const add = (n1: number, n2: number): number => {
-  return n1 + n2;
+// you need an extra type check
+if (typeof userInput === 'string') {
+  userName = userInput;
 }
 
-/////////////////////////////////////////////////////
+/////////////////////////////////////////////////
 
-// void return type is when nothing is return. again you dont have to specify this.
-const printResult = (num: number): void => {
-  console.log('Result: ' + num)
+// never
+
+// tis is like void but void returns undefine. never returns nothing at all. usually this is used for funtion that throws error because we would never get to return anything. throw will crash the code
+
+const generateError = (message: string, code: number): never => {
+  throw { errorMessage: message, errorCode: code };
 }
 
-//////////////////////////////////////////////////////
-
-// function type
-
-// we can set a variable's type to be a function
-let combineValues: Function;
-
-// when we try to assign a number we get an error
-combineValues = 5;
-combineValues = add;
-
-console.log(combineValues(8, 8))
-
-// specific funtion type
-
-// we can set the function type to be a specific funtion.
-// in this case comebineValue2 can be anyfunction that takes 2 number arguments and return a number
-let combineValues2: (a: number, b: number) => number;
-
-// print only takes one number and does not return anything so we get an error
-combineValues2 = printResult;
-combineValues2 = add;
-
-// in a callback situation
-
-const handleAdd = (num1: number, num2: number, cb: (a: number, b: number) => number) => {
-  return cb(num1, num2)
-}
-
-console.log(handleAdd(1, 2, add))
+generateError('An error occurred!', 500);
